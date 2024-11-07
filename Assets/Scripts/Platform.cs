@@ -15,7 +15,8 @@ public class Platform : MonoBehaviour
   public void OnHit()
   {
     platformTopMeshRenderer.material.DOColor(Color.magenta, 0.3f);
-    transform.DOMoveY(transform.position.y + 0.2f, 0.5f).SetEase(Ease.InOutBack);
+    transform.DOMoveY(transform.position.y + 0.4f, 0.5f).SetEase(Ease.InOutBack)
+    .OnComplete(() => transform.DOMoveY(-5, 0.5f).SetEase(Ease.InQuad));
     Destroy(gameObject, 2f);
   }
 }

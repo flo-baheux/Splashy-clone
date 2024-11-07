@@ -30,10 +30,11 @@ public class PlayerBall : MonoBehaviour
 
   void Jump()
   {
-    transform.DOMoveY(maxHeight, jumpTotalDuration / 2).SetEase(Ease.OutQuad)
-    .OnComplete(() => transform.DOMoveY(nextPlatformPos.y, jumpTotalDuration / 2).SetEase(Ease.InQuad));
+    transform.DOMoveY(maxHeight, jumpTotalDuration / 1.5f).SetEase(Ease.OutCirc)
+    // .OnComplete(() => transform.DOMoveY(nextPlatformPos.y, jumpTotalDuration / 3).SetEase(Ease.InSine));
+    .OnComplete(() => transform.DOMoveY(nextPlatformPos.y, jumpTotalDuration / 3).SetEase(Ease.InCirc));
 
-    transform.DOMoveZ(nextPlatformPos.z, jumpTotalDuration).SetEase(Ease.Linear).OnComplete(HandleJumpComplete);
+    transform.DOMoveZ(nextPlatformPos.z - 0.2f, jumpTotalDuration).SetEase(Ease.Linear).OnComplete(HandleJumpComplete);
   }
 
   void Update()

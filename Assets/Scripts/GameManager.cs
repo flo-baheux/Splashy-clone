@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 using System;
-
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
   [SerializeField] private PlatformManager platformManager;
 
   [SerializeField] private int nbPlatformHitToIncreaseMultiplier;
+  [SerializeField] private List<Color> platformColors;
+  private int platformColorIndex = 0;
 
   private double _score;
   public double Score
@@ -43,6 +45,7 @@ public class GameManager : MonoBehaviour
     player.OnPlatformHit += PlatformHitHandler;
     player.OnMissedPlatform += MissedPlatformHandler;
     nbPlatformUntilNextUpgrade = nbPlatformHitToIncreaseMultiplier;
+    platformManager.runtimePlatformSettings.material.color = platformColors[platformColorIndex];
   }
 
   void PlatformHitHandler()
@@ -60,10 +63,21 @@ public class GameManager : MonoBehaviour
     {
       ScoreMultiplier += 0.1f;
       nbPlatformUntilNextUpgrade = nbPlatformHitToIncreaseMultiplier;
-      platformManager.runtimePlatformSettings.material.
-      DOColor(UnityEngine.Random.ColorHSV(), 0.4f)
-      .SetEase(Ease.InOutSine);
+      OnMultiplerUpgradeUpdatePlatformsColor();
     }
+  }
+
+  void OnMultiplerUpgradeUpdatePlatformsColor()
+  {
+    platformManager.runtimePlatformSettings.material.
+    DOColor(PickNextPlatformColor(), 0.4f)
+    .SetEase(Ease.InOutSine);
+  }
+
+  private Color PickNextPlatformColor()
+  {
+    platformColorIndex = (platformColorIndex + 1) % platformColors.Count;
+    return platformColors[platformColorIndex];
   }
 
   void MissedPlatformHandler()
